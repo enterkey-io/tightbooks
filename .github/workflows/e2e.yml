@@ -1,16 +1,6 @@
 name: E2E
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
-      - develop
-    paths:
-      - '**.ts'
-      - '**.tsx'
-      - '**/tsconfig.json'
-      - 'pnpm-lock.yaml'
-      - '.github/workflows/e2e.yml'
   pull_request:
     paths:
       - '**.ts'
@@ -18,6 +8,11 @@ on:
       - '**/tsconfig.json'
       - 'pnpm-lock.yaml'
       - '.github/workflows/e2e.yml'
+
+# Lean CI: one run per PR head; superseded runs cancel.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 defaults:
   run:
