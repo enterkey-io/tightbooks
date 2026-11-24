@@ -1,20 +1,6 @@
 name: TypeCheck
 
 on:
-  push:
-    branches:
-      - main
-      - develop
-    paths:
-      - '**.ts'
-      - '**.tsx'
-      - '**/tsconfig.json'
-      - '**/tsconfig.*.json'
-      - 'pnpm-lock.yaml'
-      - 'package.json'
-      - 'packages/*/package.json'
-      - 'shared/*/package.json'
-      - '.github/workflows/typecheck.yml'
   pull_request:
     paths:
       - '**.ts'
@@ -26,6 +12,11 @@ on:
       - 'packages/*/package.json'
       - 'shared/*/package.json'
       - '.github/workflows/typecheck.yml'
+
+# Lean CI: one run per PR head; superseded runs cancel.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 defaults:
   run:
